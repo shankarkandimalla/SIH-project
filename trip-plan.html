@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Trip Plan</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .trip-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            text-align: center;
+        }
+
+        .details-section, .itinerary-section {
+            margin-bottom: 20px;
+        }
+
+        .day-card {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .day-card h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #4facfe;
+        }
+
+        .message-section {
+            text-align: center;
+            font-weight: bold;
+            color: green;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="trip-container">
+        <h1 id="trip-title">Your Trip Plan</h1>
+        <div class="message-section" id="message"></div>
+        
+        <div class="details-section">
+            <p><strong>Destination:</strong> <span id="destination"></span></p>
+            <p><strong>Interests:</strong> <span id="interests"></span></p>
+            <p><strong>Other Activities:</strong> <span id="otherInterests"></span></p>
+            <p><strong>Hotel Level:</strong> <span id="hotelLevel"></span></p>
+            <p><strong>Budget:</strong> ₹<span id="budget"></span></p>
+        </div>
+
+        <div class="itinerary-section" id="itinerary-content">
+            </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the data from localStorage
+            const tripPlanString = localStorage.getItem('tripPlan');
+            const tripPlan = JSON.parse(tripPlanString);
+
+            if (tripPlan) {
+                // Display the main trip details
+                document.getElementById('trip-title').textContent = `Your Trip to ${tripPlan.destination}`;
+                document.getElementById('message').textContent = '✅ Trip generated successfully!';
+                document.getElementById('destination').textContent = tripPlan.destination;
+                document.getElementById('interests').textContent = tripPlan.interests;
+                // --- CORRECTION: New code to display the new fields
+                document.getElementById('otherInterests').textContent = tripPlan.otherInterests || 'Not specified';
+                document.getElementById('hotelLevel').textContent = tripPlan.hotelLevel || 'Not specified';
+                document.getElementById('budget').textContent = tripPlan.budget;
+
+                // Display the itinerary
+                const itineraryContainer = document.getElementById('itinerary-content');
+                itineraryContainer.innerHTML = '<h2>Itinerary</h2>';
+
+                tripPlan.itinerary.forEach(day => {
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'day-card';
+                    dayCard.innerHTML = `
+                        <h4>Day ${day.day} (${day.date})</h4>
+                        <p>${day.activity}</p>
+                    `;
+                    itineraryContainer.appendChild(dayCard);
+                });
+            } else {
+                // Handle the case where there is no data
+                document.getElementById('message').textContent = '❌ No trip plan found. Please go back and generate a trip.';
+                document.getElementById('message').style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

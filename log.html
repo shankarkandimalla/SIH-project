@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tourist Login - Smart Tourism</title>
+  <style>
+    /* Body styling with background image */
+    body.form-body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      background-image: url("logimage.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Form container styling */
+    .form-containe {
+      background-color: rgba(255, 255, 255, 0.85); /* semi-transparent background */
+      padding: 40px;
+      border-radius: 12px;
+      width: 350px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .form-containe h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    /* Input fields styling */
+    .form-containe input[type="email"],
+    .form-containe input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    /* Button styling */
+    .form-containe button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-containe button:hover {
+      background-color: #218838;
+    }
+
+    /* Labels styling */
+    .form-containe label {
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body class="form-body">
+  <div class="form-containe">
+    <h2>Tourist Login</h2>
+    <form>
+      <label>Email</label>
+      <input type="email" name="email" placeholder="Enter your email" required>
+      
+      <label>Password</label>
+      <input type="password" name="pass" placeholder="Enter password" required>
+      
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

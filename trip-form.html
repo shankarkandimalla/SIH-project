@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Trip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #4facfe;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: #00c6ff;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Plan Your Trip</h2>
+        <form id="tripForm">
+            <label for="destination">Destination</label>
+            <input type="text" id="destination" name="destination" placeholder="e.g. Goa, Paris" required>
+
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" name="startDate" required>
+
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" name="endDate" required>
+
+            <label for="budget">Budget (in INR)</label>
+            <input type="number" id="budget" name="budget" placeholder="e.g. 20000" required>
+
+            <label for="members">Number of people</label>
+            <input type="number" id="members" name="members" placeholder="e.g. 2" required>
+
+            <label for="otherInterests">Other Interested Activities</label>
+            <input type="text" id="otherInterests" name="otherInterests" placeholder="e.g. hiking">
+
+            <label for="hotelLevel">Level Specification</label>
+            <select id="hotelLevel" name="hotelLevel">
+                <option value="High End">High Luxurious Hotel</option>
+                <option value="moderate">A Good Hotel</option>
+                <option value="budget">Budget Friendly</option>
+            </select>
+
+            <label for="interests">Interests</label>
+            <select id="interests" name="interests">
+                <option value="relax">Relax</option>
+                <option value="culture">Culture</option>
+                <option value="adventure">Adventure</option>
+                <option value="nature">Nature</option>
+            </select>
+
+            <button type="submit">Continue</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            Trip details submitted! 🚀
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("tripForm");
+        const successMessage = document.getElementById("successMessage");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault(); // prevent reload
+
+            // --- CORRECTION: All form values are now correctly captured
+            const formData = {
+                destination: form.destination.value,
+                startDate: form.startDate.value,
+                endDate: form.endDate.value,
+                budget: form.budget.value,
+                members: form.members.value,
+                otherInterests: form.otherInterests.value, // New field
+                hotelLevel: form.hotelLevel.value, // New field
+                interests: form.interests.value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/trip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('tripPlan', JSON.stringify(data.tripPlan));
+                    window.location.href = 'trip-plan.html';
+                } else {
+                    throw new Error(data.error || 'Failed to generate trip');
+                }
+
+            } catch (err) {
+                console.error(err);
+                successMessage.style.color = "red";
+                successMessage.textContent = "❌ Failed to generate trip. Please try again.";
+            }
+        });
+    </script>
+</body>
+</html>
